@@ -20,15 +20,15 @@ public class TileEntityGachaCore extends TileEntityMultiblock{
 		};
 
 		pattern[1] = new Block[][]{
-			{Blocks.glass_pane, 		Blocks.air, 	Blocks.glass_pane},
-			{Blocks.air, 				Blocks.air, 	Blocks.air},
-			{Blocks.glass_pane, 		Blocks.air, 	Blocks.glass_pane}
+			{Blocks.glass_pane, 		Blocks.air, 		Blocks.glass_pane},
+			{Blocks.air, 				Blocks.air, 		Blocks.air},
+			{Blocks.glass_pane, 		Blocks.air, 		Blocks.glass_pane}
 		};
 
 		pattern[2] = new Block[][]{
-			{Blocks.leaves, 				Blocks.stone_stairs, 	Blocks.leaves},
-			{Blocks.stone_stairs, 		Blocks.glowstone, 		Blocks.stone_stairs},
-			{Blocks.leaves, 				Blocks.stone_stairs, 	Blocks.leaves}
+			{Blocks.leaves, 			Blocks.bookshelf, 		Blocks.leaves},
+			{Blocks.bookshelf, 		Blocks.glowstone, 		Blocks.bookshelf},
+			{Blocks.leaves, 			Blocks.bookshelf, 		Blocks.leaves}
 		};
 
 		this.pattern = new MultiblockPattern(pattern, 0, 1, 1);
