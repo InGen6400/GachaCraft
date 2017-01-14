@@ -4,12 +4,15 @@ import java.util.Random;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gachacraft.GachaCraft;
 import gachacraft.gacha.tileentity.TileEntityGachaCore;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
@@ -37,7 +40,20 @@ public class BlockGachaCore extends BlockContainer{
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float posX, float posY, float posZ){
 		TileEntityGachaCore tile = (TileEntityGachaCore)world.getTileEntity(x, y, z);
 		if(tile.isPatternVaild(world)){
-			System.out.println("pattern vaild");
+	        for (Object o : world.loadedEntityList) {
+	            Entity e = (Entity) o;
+	            if (!e.isDead && e instanceof EntityItem && ((EntityItem)e).getDataWatcher().getWatchableObjectItemStack(10).getItem() == GachaCraft.GachaTicket){
+	            	double dx = e.posX - x;
+	            	double dy = e.posY - (y + 1);
+	            	double dz = e.posZ - z;
+
+	            	double dist = dx*dx + dy*dy + dz*dz;
+
+	            	if(dist < 1){
+	            		((EntityItem)e).lifespan = 0;
+	            	}
+	            }
+	        }
 		}
 		return true;
     }
