@@ -4,15 +4,18 @@ import java.util.Random;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gachacraft.gacha.tileentity.TileEntityGachaCore;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
-public class BlockGachaCore extends Block{
+public class BlockGachaCore extends BlockContainer{
 
     @SideOnly(Side.CLIENT)
     private IIcon Icon;
@@ -32,9 +35,50 @@ public class BlockGachaCore extends Block{
 
 	@Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float posX, float posY, float posZ){
-        //ブロックを右クリックした際の動作
-        return true;
+		TileEntityGachaCore tile = (TileEntityGachaCore)world.getTileEntity(x, y, z);
+		if(tile.isPatternVaild(world)){
+			System.out.println("pattern vaild");
+		}
+		return true;
     }
+
+	@Override
+	public void randomDisplayTick(World world, int x, int y, int z, Random random) {
+		TileEntityGachaCore tile = (TileEntityGachaCore)world.getTileEntity(x, y, z);
+		if(tile.isPatternVaild(world)){
+
+	        for (int l = x - 5; l <= x + 5; ++l)
+	        {
+	            for (int i1 = z - 5; i1 <= z + 5; ++i1)
+	            {
+	                if (l > x - 5 && l < x + 5 && i1 == z - 1)
+	                {
+	                    i1 = z + 2;
+	                }
+
+	                if (random.nextInt(16) == 0)
+	                {
+	                    for (int j1 = y; j1 <= y + 1; ++j1)
+	                    {
+	                    	if(random.nextInt(3) == 0){
+	                            world.spawnParticle("enchantmenttable",
+	                            		(double)x + 0.5D, (double)y + 2.0D, (double)z + 0.5D,
+	                            		(double)((float)(l - x) + random.nextFloat()) - 0.5D,
+	                            		(double)((float)(j1 - y) - random.nextFloat() - 1.0F),
+	                            		(double)((float)(i1 - z) + random.nextFloat()) - 0.5D);
+                            }else{
+	                            world.spawnParticle("portal",
+	                            		(double)x + 0.5D, (double)y + 2.0D, (double)z + 0.5D,
+	                            		(double)((float)(l - x) + random.nextFloat()) - 0.5D,
+	                            		(double)((float)(j1 - y) - random.nextFloat() - 1.0F),
+	                            		(double)((float)(i1 - z) + random.nextFloat()) - 0.5D);
+                            }
+	                    }
+	                }
+	            }
+	        }
+		}
+	}
 
     @Override
     public void onBlockClicked(World world, int x, int y, int z, EntityPlayer player){
@@ -70,5 +114,10 @@ public class BlockGachaCore extends Block{
     {
     	return Icon;
     }
+
+	@Override
+	public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_) {
+		return new TileEntityGachaCore();
+	}
 
 }
