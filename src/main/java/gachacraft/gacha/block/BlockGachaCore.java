@@ -69,6 +69,7 @@ public class BlockGachaCore extends BlockContainer{
 		prizes[PrizeRarity.Epic].addItems(Items.iron_ingot, 64);
 		prizes[PrizeRarity.Epic].addItems(Items.gold_ingot, 32);
 		prizes[PrizeRarity.Epic].addItems(Blocks.glowstone, 32);
+		prizes[PrizeRarity.Epic].addItems(Items.skull, 1, 1);
 
 		prizes[PrizeRarity.Rare].addItems(Items.gold_ingot, 8);
 		prizes[PrizeRarity.Rare].addItems(Items.nether_wart, 4);
@@ -142,38 +143,37 @@ public class BlockGachaCore extends BlockContainer{
 	            			case PrizeRarity.Legend:
 	            				color = EnumChatFormatting.GOLD;
 	            				rarity = "Legendary";
-	            				player.playSound("mob.enderdragon.growl4", 1, 1);
+	            				world.playSoundAtEntity(player, "mob.enderdragon.growl", 1.0F, 1.0F);
 	            				break;
 	            			case PrizeRarity.Epic:
 	            				color = EnumChatFormatting.LIGHT_PURPLE;
 	            				rarity = "Epic";
-	            				player.playSound("entity.lightning.thunder", 1, 1);
+	            				world.playSoundAtEntity(player, "ambient.weather.thunder", 1.0F, 1.0F);
 	            				break;
 	            			case PrizeRarity.Rare:
 	            				color = EnumChatFormatting.AQUA;
 	            				rarity = "Rare";
-	            				player.playSound("random.levelup", 1, 1);
+	            				world.playSoundAtEntity(player, "random.levelup", 1.0F, 1.0F);
 	            				break;
 	            			case PrizeRarity.Common:
 	            				color = EnumChatFormatting.GREEN;
 	            				rarity = "Common";
-	            				player.playSound("entity.experience_orb.pickup", 1, 1);
+	            				world.playSoundAtEntity(player, "random.orb", 1.0F, 1.0F);
 	            				break;
 	            			case PrizeRarity.Basic:
 	            				color = EnumChatFormatting.RED;
 	            				rarity = "Basic";
-	            				player.playSound("minecraft:random.break", 1, 1);
+	            				world.playSoundAtEntity(player, "mob.chicken.plop", 1.0F, 1.0F);
 	            				break;
 	            			case PrizeRarity.Scrap:
 	            				color = EnumChatFormatting.DARK_RED;
 	            				rarity = "Scrap";
-	            				player.playSound("entity.silverfish.ambient", 1, 1);
+	            				world.playSoundAtEntity(player, "mob.silverfish.say", 1.0F, 1.0F);
 	            				break;
 	            				default:
 	            					color = EnumChatFormatting.WHITE;
 	            					rarity = null;
 	            			}
-
 	            			LogChatHelper.DebugLog("You got " + color + rarity +EnumChatFormatting.WHITE +" item : "+ PrizeItem.getDisplayName() + "x" + PrizeItem.stackSize);
 	            			dropBlockAsItem(world, x, y + 1, z, PrizeItem);
 	            			return true;

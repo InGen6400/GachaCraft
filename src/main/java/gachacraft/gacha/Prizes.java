@@ -33,12 +33,20 @@ public class Prizes {
 		items.add(new ItemStack(item, num));
 	}
 
+	public void addItems(Item item, int num, int meta){
+		items.add(new ItemStack(item, num, meta));
+	}
+
 	public void addItems(Block item){
 		items.add(new ItemStack(item));
 	}
 
 	public void addItems(Block item, int num){
 		items.add(new ItemStack(item, num));
+	}
+
+	public void addItems(Block item, int num, int meta){
+		items.add(new ItemStack(item, num, meta));
 	}
 
 	public double getRate(){
