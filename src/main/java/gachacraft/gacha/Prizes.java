@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import gachacraft.helper.LogChatHelper;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -55,10 +54,9 @@ public class Prizes {
 	}
 
 	public ItemStack getPrize(){
-		if(items.size() == 1){
+		if(items.size() != 1){
 			return items.get(random.nextInt(items.size()));
 		}else{
-			LogChatHelper.DebugLog("get0");
 			return items.get(0);
 		}
 	}
