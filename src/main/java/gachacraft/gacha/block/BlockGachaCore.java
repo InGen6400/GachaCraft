@@ -21,6 +21,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
@@ -57,17 +58,58 @@ public class BlockGachaCore extends BlockContainer{
 		prizes[PrizeRarity.Basic] 	= new Prizes(100, PrizeRarity.Basic);
 		prizes[PrizeRarity.Scrap] 	= new Prizes(30, PrizeRarity.Scrap);
 
+		prizes[PrizeRarity.Legend].addItems(Items.nether_star);
+		prizes[PrizeRarity.Legend].addItems(Items.diamond, 64);
 		prizes[PrizeRarity.Legend].addItems(Blocks.dragon_egg);
 
-		prizes[PrizeRarity.Epic].addItems(Items.diamond);
+		prizes[PrizeRarity.Epic].addItems(Items.diamond, 4);
+		prizes[PrizeRarity.Epic].addItems(Items.diamond_pickaxe);
+		prizes[PrizeRarity.Epic].addItems(Items.diamond_axe);
+		prizes[PrizeRarity.Epic].addItems(Items.diamond_sword);
+		prizes[PrizeRarity.Epic].addItems(Items.iron_ingot, 64);
+		prizes[PrizeRarity.Epic].addItems(Items.gold_ingot, 32);
+		prizes[PrizeRarity.Epic].addItems(Blocks.glowstone, 32);
 
-		prizes[PrizeRarity.Rare].addItems(Items.gold_ingot, 4);
+		prizes[PrizeRarity.Rare].addItems(Items.gold_ingot, 8);
+		prizes[PrizeRarity.Rare].addItems(Items.nether_wart, 4);
+		prizes[PrizeRarity.Rare].addItems(Items.blaze_rod, 8);
+		prizes[PrizeRarity.Rare].addItems(Items.iron_axe, 1);
+		prizes[PrizeRarity.Rare].addItems(Items.iron_pickaxe, 1);
+		prizes[PrizeRarity.Rare].addItems(Items.iron_shovel, 1);
+		prizes[PrizeRarity.Rare].addItems(Items.iron_sword, 1);
+		prizes[PrizeRarity.Rare].addItems(Items.iron_chestplate, 1);
+		prizes[PrizeRarity.Rare].addItems(Items.iron_helmet, 1);
+		prizes[PrizeRarity.Rare].addItems(Items.iron_boots, 1);
+		prizes[PrizeRarity.Rare].addItems(Items.iron_leggings, 1);
+		prizes[PrizeRarity.Rare].addItems(Items.ghast_tear, 1);
+		prizes[PrizeRarity.Rare].addItems(Blocks.obsidian, 2);
+		prizes[PrizeRarity.Rare].addItems(Blocks.brick_block, 32);
 
 		prizes[PrizeRarity.Common].addItems(Items.iron_ingot, 16);
+		prizes[PrizeRarity.Common].addItems(Items.fishing_rod, 1);
+		prizes[PrizeRarity.Common].addItems(Items.cooked_beef, 8);
+		prizes[PrizeRarity.Common].addItems(Items.cooked_porkchop, 8);
+		prizes[PrizeRarity.Common].addItems(Items.redstone, 16);
+		prizes[PrizeRarity.Common].addItems(Blocks.lapis_block, 4);
+		prizes[PrizeRarity.Common].addItems(Blocks.log, 16);
+		prizes[PrizeRarity.Common].addItems(Blocks.glass, 16);
+		prizes[PrizeRarity.Common].addItems(Blocks.vine, 16);
+		prizes[PrizeRarity.Common].addItems(Blocks.waterlily, 8);
 
 		prizes[PrizeRarity.Basic].addItems(Items.coal, 4);
+		prizes[PrizeRarity.Basic].addItems(Items.apple, 4);
+		prizes[PrizeRarity.Basic].addItems(Items.stone_axe, 1);
+		prizes[PrizeRarity.Basic].addItems(Items.stone_pickaxe, 1);
+		prizes[PrizeRarity.Basic].addItems(Items.stone_sword, 1);
+		prizes[PrizeRarity.Basic].addItems(Items.baked_potato, 8);
+		prizes[PrizeRarity.Basic].addItems(Items.stone_sword, 1);
+		prizes[PrizeRarity.Basic].addItems(Blocks.stonebrick, 16);
+		prizes[PrizeRarity.Common].addItems(Blocks.sapling, 8);
 
 		prizes[PrizeRarity.Scrap].addItems(Items.wheat_seeds, 8);
+		prizes[PrizeRarity.Scrap].addItems(Items.wooden_hoe, 1);
+		prizes[PrizeRarity.Scrap].addItems(Items.leather_boots, 1);
+		prizes[PrizeRarity.Scrap].addItems(Blocks.cobblestone, 16);
 
 	}
 
@@ -87,14 +129,56 @@ public class BlockGachaCore extends BlockContainer{
 
 	            	if(dist < 1){
 	            		((EntityItem)e).lifespan = 0;
-	            		Prizes itemStack = dropPrizeDraw();
-	            		if(itemStack != null){
-	            			ItemStack PrizeItem = itemStack.getPrize().copy();
-	            			LogChatHelper.DebugLog("You get : " + PrizeItem.getDisplayName());
+	            		Prizes prize = dropPrizeDraw();
+	            		if(prize != null){
+	            			ItemStack PrizeItem = prize.getPrize().copy();
+	            			EnumChatFormatting color;
+	            			String rarity;
+	            			switch(prize.getRarity()){
+	            			case PrizeRarity.Secret:
+	            				color = EnumChatFormatting.AQUA;
+	            				rarity = "Secret Rare";
+	            				break;
+	            			case PrizeRarity.Legend:
+	            				color = EnumChatFormatting.GOLD;
+	            				rarity = "Legendary";
+	            				player.playSound("mob.enderdragon.growl4", 1, 1);
+	            				break;
+	            			case PrizeRarity.Epic:
+	            				color = EnumChatFormatting.LIGHT_PURPLE;
+	            				rarity = "Epic";
+	            				player.playSound("entity.lightning.thunder", 1, 1);
+	            				break;
+	            			case PrizeRarity.Rare:
+	            				color = EnumChatFormatting.AQUA;
+	            				rarity = "Rare";
+	            				player.playSound("random.levelup", 1, 1);
+	            				break;
+	            			case PrizeRarity.Common:
+	            				color = EnumChatFormatting.GREEN;
+	            				rarity = "Common";
+	            				player.playSound("entity.experience_orb.pickup", 1, 1);
+	            				break;
+	            			case PrizeRarity.Basic:
+	            				color = EnumChatFormatting.RED;
+	            				rarity = "Basic";
+	            				player.playSound("minecraft:random.break", 1, 1);
+	            				break;
+	            			case PrizeRarity.Scrap:
+	            				color = EnumChatFormatting.DARK_RED;
+	            				rarity = "Scrap";
+	            				player.playSound("entity.silverfish.ambient", 1, 1);
+	            				break;
+	            				default:
+	            					color = EnumChatFormatting.WHITE;
+	            					rarity = null;
+	            			}
+
+	            			LogChatHelper.DebugLog("You got " + color + rarity +EnumChatFormatting.WHITE +" item : "+ PrizeItem.getDisplayName() + "x" + PrizeItem.stackSize);
 	            			dropBlockAsItem(world, x, y + 1, z, PrizeItem);
 	            			return true;
 	            		}else{
-	            			LogChatHelper.DebugLog("asd");
+	            			LogChatHelper.DebugLog("Gacha Core Error: no Items");
 	            			return true;
 	            		}
 	            	}
