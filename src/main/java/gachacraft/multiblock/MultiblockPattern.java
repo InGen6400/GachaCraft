@@ -27,11 +27,11 @@ public class MultiblockPattern {
 	}
 
 	public int getHeight(){
-		return pattern[0].length;
+		return pattern.length;
 	}
 
 	public int getWidthX(){
-		return pattern.length;
+		return pattern[0].length;
 	}
 
 	public int getWidthZ(){
