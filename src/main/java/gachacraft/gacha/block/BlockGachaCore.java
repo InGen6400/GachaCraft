@@ -87,9 +87,11 @@ public class BlockGachaCore extends BlockContainer{
 
 	            	if(dist < 1){
 	            		((EntityItem)e).lifespan = 0;
-	            		ItemStack itemStack = dropPrizeDraw();
+	            		Prizes itemStack = dropPrizeDraw();
 	            		if(itemStack != null){
-	            			dropBlockAsItem(world, x, y + 1, z, itemStack);
+	            			ItemStack PrizeItem = itemStack.getPrize().copy();
+	            			LogChatHelper.DebugLog("You get : " + PrizeItem.getDisplayName());
+	            			dropBlockAsItem(world, x, y + 1, z, PrizeItem);
 	            			return true;
 	            		}else{
 	            			LogChatHelper.DebugLog("asd");
@@ -102,7 +104,7 @@ public class BlockGachaCore extends BlockContainer{
 		return true;
     }
 
-	private ItemStack dropPrizeDraw(){
+	private Prizes dropPrizeDraw(){
 
 		int RateAll = 0;
 		int max = 0;
@@ -113,12 +115,10 @@ public class BlockGachaCore extends BlockContainer{
 		}
 		int selector = rand.nextInt(RateAll);
 
-		LogChatHelper.DebugLog(selector + ":" + RateAll);
-
 		for(int i=0; i<prizes.length; i++){
 			max += prizes[i].getRate();
 			if(selector <= max){
-				return prizes[i].getPrize();
+				return prizes[i];
 			}
 		}
 		return null;
