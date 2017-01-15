@@ -22,9 +22,13 @@ public class GachaCraft {
 	public void preInit(FMLPreInitializationEvent event){
 		GachaTicket = new ItemGachaTicket();
 		MagicStone = new ItemMagicStone();
-		GachaCore = new BlockGachaCore();
 		GameRegistry.registerItem(GachaTicket, "GachaTicket");
 		GameRegistry.registerItem(MagicStone, "MagicStone");
+	}
+
+	@Mod.EventHandler
+	public void Init(FMLPreInitializationEvent event){
+		GachaCore = new BlockGachaCore();
 		GameRegistry.registerBlock(GachaCore, "GachaCore");
 		GameRegistry.registerTileEntity(TileEntityGachaCore.class, "GachaCoreTile");
 	}

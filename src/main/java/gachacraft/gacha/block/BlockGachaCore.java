@@ -5,7 +5,10 @@ import java.util.Random;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gachacraft.GachaCraft;
+import gachacraft.gacha.PrizeRarity;
+import gachacraft.gacha.Prizes;
 import gachacraft.gacha.tileentity.TileEntityGachaCore;
+import gachacraft.helper.LogChatHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -14,6 +17,9 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
@@ -22,6 +28,8 @@ public class BlockGachaCore extends BlockContainer{
 
     @SideOnly(Side.CLIENT)
     private IIcon Icon;
+
+    private Prizes[] prizes;
 
 	public BlockGachaCore() {
 		super(Material.rock);
@@ -34,12 +42,40 @@ public class BlockGachaCore extends BlockContainer{
         setLightOpacity(1);/*ブロックの透過係数。デフォルト０（不透過）*/
         setLightLevel(1.0F);/*明るさ 1.0F = 15*/
         setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);/*当たり判定*/
+        PrizeInit();
+	}
+
+	public void PrizeInit(){
+
+		prizes = new Prizes[PrizeRarity.all];
+
+		prizes[PrizeRarity.Secret] 	= new Prizes(0, PrizeRarity.Secret);
+		prizes[PrizeRarity.Legend] 	= new Prizes(1, PrizeRarity.Legend);//1
+		prizes[PrizeRarity.Epic] 		= new Prizes(10, PrizeRarity.Epic);//11
+		prizes[PrizeRarity.Rare] 		= new Prizes(25, PrizeRarity.Rare);//36
+		prizes[PrizeRarity.Common] 	= new Prizes(50, PrizeRarity.Common);//86
+		prizes[PrizeRarity.Basic] 	= new Prizes(100, PrizeRarity.Basic);
+		prizes[PrizeRarity.Scrap] 	= new Prizes(30, PrizeRarity.Scrap);
+
+		prizes[PrizeRarity.Legend].addItems(Blocks.dragon_egg);
+
+		prizes[PrizeRarity.Epic].addItems(Items.diamond);
+
+		prizes[PrizeRarity.Rare].addItems(Items.gold_ingot, 4);
+
+		prizes[PrizeRarity.Common].addItems(Items.iron_ingot, 16);
+
+		prizes[PrizeRarity.Basic].addItems(Items.coal, 4);
+
+		prizes[PrizeRarity.Scrap].addItems(Items.wheat_seeds, 8);
+
 	}
 
 	@Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float posX, float posY, float posZ){
 		TileEntityGachaCore tile = (TileEntityGachaCore)world.getTileEntity(x, y, z);
-		if(tile.isPatternVaild(world)){
+		LogChatHelper.player = player;
+		if(!world.isRemote && tile.isPatternVaild(world)){
 	        for (Object o : world.loadedEntityList) {
 	            Entity e = (Entity) o;
 	            if (!e.isDead && e instanceof EntityItem && ((EntityItem)e).getDataWatcher().getWatchableObjectItemStack(10).getItem() == GachaCraft.GachaTicket){
@@ -51,12 +87,42 @@ public class BlockGachaCore extends BlockContainer{
 
 	            	if(dist < 1){
 	            		((EntityItem)e).lifespan = 0;
+	            		ItemStack itemStack = dropPrizeDraw();
+	            		if(itemStack != null){
+	            			dropBlockAsItem(world, x, y + 1, z, itemStack);
+	            			return true;
+	            		}else{
+	            			LogChatHelper.DebugLog("asd");
+	            			return true;
+	            		}
 	            	}
 	            }
 	        }
 		}
 		return true;
     }
+
+	private ItemStack dropPrizeDraw(){
+
+		int RateAll = 0;
+		int max = 0;
+		Random  rand = new Random();
+
+		for(int i=0; i<prizes.length; i++){
+			RateAll += prizes[i].getRate();
+		}
+		int selector = rand.nextInt(RateAll);
+
+		LogChatHelper.DebugLog(selector + ":" + RateAll);
+
+		for(int i=0; i<prizes.length; i++){
+			max += prizes[i].getRate();
+			if(selector <= max){
+				return prizes[i].getPrize();
+			}
+		}
+		return null;
+	}
 
 	@Override
 	public void randomDisplayTick(World world, int x, int y, int z, Random random) {
