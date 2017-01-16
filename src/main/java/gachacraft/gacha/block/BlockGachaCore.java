@@ -145,12 +145,22 @@ public class BlockGachaCore extends BlockContainer{
 
 	            	}else if(itemStack.getItem() == GachaCraft.MagicStone && itemStack.stackSize >= 4){
 
-	            		prizes[PrizeRarity.Scrap].setRateIncrease(-25);
-	            		prizes[PrizeRarity.Common].setRateIncrease(-20);
-	            		prizes[PrizeRarity.Basic].setRateIncrease(-70);
-	            		prizes[PrizeRarity.Rare].setRateIncrease(15);
-	            		prizes[PrizeRarity.Epic].setRateIncrease(2);
-	            		itemStack.stackSize -= 4;
+	            		if(itemStack.stackSize >= 64){
+	            			prizes[PrizeRarity.Scrap].setRateIncrease(-25);
+		            		prizes[PrizeRarity.Common].setRateIncrease(-20);
+		            		prizes[PrizeRarity.Basic].setRateIncrease(-70);
+		            		prizes[PrizeRarity.Rare].setRateIncrease(15);
+		            		prizes[PrizeRarity.Epic].setRateIncrease(2);
+		            		itemStack.stackSize -= 4;
+	            		}else if(itemStack.stackSize >= 4){
+	            			prizes[PrizeRarity.Scrap].setRateIncrease(-25);
+		            		prizes[PrizeRarity.Common].setRateIncrease(-20);
+		            		prizes[PrizeRarity.Basic].setRateIncrease(-70);
+		            		prizes[PrizeRarity.Rare].setRateIncrease(15);
+		            		prizes[PrizeRarity.Epic].setRateIncrease(2);
+		            		itemStack.stackSize -= 4;
+	            		}
+
 	            	}else{
 	            		continue;
 	            	}
