@@ -1,5 +1,7 @@
 package gachacraft.gacha.block;
 
+import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.Random;
 
 import cpw.mods.fml.relauncher.Side;
@@ -15,11 +17,15 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityFireworkRocket;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
@@ -57,6 +63,8 @@ public class BlockGachaCore extends BlockContainer{
 		prizes[PrizeRarity.Common] 	= new Prizes(50, PrizeRarity.Common);//86
 		prizes[PrizeRarity.Basic] 	= new Prizes(100, PrizeRarity.Basic);
 		prizes[PrizeRarity.Scrap] 	= new Prizes(30, PrizeRarity.Scrap);
+
+		prizes[PrizeRarity.Secret].addItems(Blocks.mob_spawner);
 
 		prizes[PrizeRarity.Legend].addItems(Items.nether_star);
 		prizes[PrizeRarity.Legend].addItems(Items.diamond, 64);
@@ -168,21 +176,28 @@ public class BlockGachaCore extends BlockContainer{
 	            				color = EnumChatFormatting.GOLD;
 	            				rarity = "Legendary";
 	            				world.playSoundAtEntity(player, "mob.enderdragon.growl", 1.0F, 1.0F);
+	            				world.playSoundAtEntity(player, "ambient.weather.thunder", 1.0F, 1.0F);
+	            				world.playSoundAtEntity(player, "random.levelup", 1.0F, 1.0F);
+	            				world.playSoundAtEntity(player, "random.orb", 1.0F, 1.0F);
+	            				LaunchFireworks(world, player, x, y, z, 4);
 	            				break;
 	            			case PrizeRarity.Epic:
 	            				color = EnumChatFormatting.LIGHT_PURPLE;
 	            				rarity = "Epic";
 	            				world.playSoundAtEntity(player, "ambient.weather.thunder", 1.0F, 1.0F);
+	            				world.playSoundAtEntity(player, "random.levelup", 1.0F, 1.0F);
+	            				world.playSoundAtEntity(player, "random.orb", 1.0F, 1.0F);
+	            				LaunchFireworks(world, player, x, y, z, 1);
 	            				break;
 	            			case PrizeRarity.Rare:
 	            				color = EnumChatFormatting.AQUA;
 	            				rarity = "Rare";
-	            				world.playSoundAtEntity(player, "random.levelup", 1.0F, 1.0F);
+	            				world.playSoundAtEntity(player, "random.levelup", 0.4F, 1.0F);
 	            				break;
 	            			case PrizeRarity.Common:
 	            				color = EnumChatFormatting.GREEN;
 	            				rarity = "Common";
-	            				world.playSoundAtEntity(player, "random.orb", 1.0F, 1.0F);
+	            				world.playSoundAtEntity(player, "random.orb", 0.5F, 1.0F);
 	            				break;
 	            			case PrizeRarity.Basic:
 	            				color = EnumChatFormatting.RED;
@@ -290,6 +305,62 @@ public class BlockGachaCore extends BlockContainer{
     public int quantityDropped(Random random){
         //ドロップさせる量を返す
         return 1;
+    }
+
+    private void LaunchFireworks(World world, EntityPlayer player, int x, int y, int z, int num){
+    	ItemStack itemFireworks = new ItemStack(Items.fireworks);
+    	ItemStack field_92102_a = new ItemStack(Items.firework_charge);
+    	NBTTagCompound nbttagcompound = new NBTTagCompound();
+    	NBTTagCompound nbttagcompound1 = new NBTTagCompound();
+
+    	Random random = new Random();
+        byte b0 = 0;
+        ArrayList arraylist = new ArrayList();
+
+
+        arraylist.add(Integer.valueOf(ItemDye.field_150922_c[random.nextInt(16)]));
+        arraylist.add(Integer.valueOf(ItemDye.field_150922_c[random.nextInt(16)]));
+        arraylist.add(Integer.valueOf(ItemDye.field_150922_c[random.nextInt(16)]));
+
+        nbttagcompound1.setBoolean("Trail", true);
+        b0 = ByteBuffer.allocate(8).putInt(random.nextInt(4)+1).get();
+
+        int[] aint1 = new int[arraylist.size()];
+
+        for (int l2 = 0; l2 < aint1.length; ++l2)
+        {
+            aint1[l2] = ((Integer)arraylist.get(l2)).intValue();
+        }
+
+        nbttagcompound1.setIntArray("Colors", aint1);
+        nbttagcompound1.setByte("Type", b0);
+        nbttagcompound.setTag("Explosion", nbttagcompound1);
+        field_92102_a.setTagCompound(nbttagcompound);
+
+        NBTTagCompound nbttagcompound4 = new NBTTagCompound();
+        NBTTagCompound nbttagcompound5 = new NBTTagCompound();
+        NBTTagList nbttaglist = new NBTTagList();
+
+
+        nbttaglist.appendTag(nbttagcompound.getCompoundTag("Explosion"));
+
+        nbttagcompound4.setTag("Explosions", nbttaglist);
+        nbttagcompound4.setByte("Flight", (byte)0);
+        nbttagcompound5.setTag("Fireworks", nbttagcompound4);
+
+        itemFireworks.setTagCompound(nbttagcompound5);
+        if (!world.isRemote)
+        {
+        	for(int i=0; i<num; i++){
+                EntityFireworkRocket entityfireworkrocket = new EntityFireworkRocket(
+                		world,
+                		(double)(x + random.nextInt(3) - 1.5f),
+                		(double)(y + 4),
+                		(double)(z + random.nextInt(3) - 1.5f),
+                		itemFireworks);
+                world.spawnEntityInWorld(entityfireworkrocket);
+        	}
+        }
     }
 
     @Override
