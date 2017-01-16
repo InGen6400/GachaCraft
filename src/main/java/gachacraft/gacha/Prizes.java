@@ -11,7 +11,8 @@ import net.minecraft.item.ItemStack;
 public class Prizes {
 
 	private List<ItemStack> items = new ArrayList<ItemStack>();
-	private double rate;
+	private final double rate;
+	private double RateIncrease;
 	private int rarity;
 
 	private Random random = new Random();
@@ -19,6 +20,14 @@ public class Prizes {
 	public Prizes(double rate, int rarity) {
 		this.rate = rate;
 		this.rarity = rarity;
+	}
+
+	public void setRateIncrease(double increase){
+		RateIncrease = increase;
+	}
+
+	public void rateReset(){
+		RateIncrease = 0;
 	}
 
 	public void addItems(ItemStack item){
@@ -50,7 +59,7 @@ public class Prizes {
 	}
 
 	public double getRate(){
-		return rate;
+		return rate + RateIncrease;
 	}
 
 	public int getRarity(){

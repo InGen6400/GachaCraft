@@ -121,7 +121,32 @@ public class BlockGachaCore extends BlockContainer{
 		if(!world.isRemote && tile.isPatternVaild(world)){
 	        for (Object o : world.loadedEntityList) {
 	            Entity e = (Entity) o;
-	            if (!e.isDead && e instanceof EntityItem && ((EntityItem)e).getDataWatcher().getWatchableObjectItemStack(10).getItem() == GachaCraft.GachaTicket){
+	            if (!e.isDead && e instanceof EntityItem){
+	            	EntityItem entityItem = (EntityItem)e;
+	            	ItemStack itemStack = entityItem.getDataWatcher().getWatchableObjectItemStack(10);
+	            	if(itemStack.getItem() == GachaCraft.GachaTicket){
+
+	            		prizes[PrizeRarity.Secret].rateReset();
+	            		prizes[PrizeRarity.Legend].rateReset();
+	            		prizes[PrizeRarity.Epic].rateReset();
+	            		prizes[PrizeRarity.Rare].rateReset();
+	            		prizes[PrizeRarity.Common].rateReset();
+	            		prizes[PrizeRarity.Basic].rateReset();
+	            		prizes[PrizeRarity.Scrap].rateReset();
+	            		entityItem.lifespan = 0;
+
+	            	}else if(itemStack.getItem() == GachaCraft.MagicStone && itemStack.stackSize >= 4){
+
+	            		prizes[PrizeRarity.Scrap].setRateIncrease(-25);
+	            		prizes[PrizeRarity.Common].setRateIncrease(-20);
+	            		prizes[PrizeRarity.Basic].setRateIncrease(-70);
+	            		prizes[PrizeRarity.Rare].setRateIncrease(15);
+	            		prizes[PrizeRarity.Epic].setRateIncrease(2);
+	            		itemStack.stackSize -= 4;
+	            	}else{
+	            		continue;
+	            	}
+
 	            	double dx = e.posX - x;
 	            	double dy = e.posY - (y + 1);
 	            	double dz = e.posZ - z;
@@ -129,7 +154,6 @@ public class BlockGachaCore extends BlockContainer{
 	            	double dist = dx*dx + dy*dy + dz*dz;
 
 	            	if(dist < 1){
-	            		((EntityItem)e).lifespan = 0;
 	            		Prizes prize = dropPrizeDraw();
 	            		if(prize != null){
 	            			ItemStack PrizeItem = prize.getPrize().copy();
