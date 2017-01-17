@@ -10,6 +10,7 @@ public class ItemMagicStone extends Item{
 		setCreativeTab(CreativeTabs.tabMaterials);
 		setUnlocalizedName("MagicStone");
 		setTextureName("gachacraft:MagicStone");
+		this.setHasSubtypes(true);
 
 	}
 }
