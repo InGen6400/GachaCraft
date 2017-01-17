@@ -51,7 +51,7 @@ public class EntityGachaPivot extends Entity{
 					tmpItem.getEntityItem().stackSize = 4;
 
 					childItem.add(tmpItem);
-					angle = 4.0D;
+					angle = 2.0D;
 				}else{
 					angle = 0.0D;
 
@@ -66,7 +66,7 @@ public class EntityGachaPivot extends Entity{
 
 		super.onUpdate();
 		angle += 2.0D;
-
+		double radian = 0;
 		if(worldObj.isRemote){
 			r = Math.sin(angle * 2 * 2.0D * Math.PI / 360.0D)/2 + r2;
 			if(!radiusSin){
@@ -77,7 +77,7 @@ public class EntityGachaPivot extends Entity{
 			}
 			for(int i=0 ; i<prizeCount ; i++){
 
-				double radian = (angle + i * 360.0D/firstCount) * 2.0D * Math.PI / 360.0D;
+				radian = (angle + i * 360.0D/firstCount) * 2.0D * Math.PI / 360.0D;
 
 				double X = r * Math.cos(radian) + posX + 0.5D;
 				double Y = posY + 1.5;
@@ -102,7 +102,13 @@ public class EntityGachaPivot extends Entity{
 								childItem.get(prizeCount).posX + rand.nextDouble()/2 - 0.25D,
 								childItem.get(prizeCount).posY + rand.nextDouble()/2 - 0.25D,
 								childItem.get(prizeCount).posZ + rand.nextDouble()/2 - 0.25D,
-								0, 0, 0);
+								-Math.cos(radian)/10, 0, -Math.sin(radian)/10);
+						worldObj.spawnParticle(
+								"explode",
+								childItem.get(prizeCount).posX + rand.nextDouble()/2 - 0.25D,
+								childItem.get(prizeCount).posY + rand.nextDouble()/2 - 0.25D,
+								childItem.get(prizeCount).posZ + rand.nextDouble()/2 - 0.25D,
+								0,0,0);
 					}
 					childItem.get(prizeCount).setDead();
 					childItem.remove(prizeCount);
