@@ -190,19 +190,19 @@ public class TileEntityGachaCore extends TileEntityMultiblock{
 
 		            		if(itemStack.stackSize >= 16){
 		            			world.spawnEntityInWorld(new EntityGachaPivot(world, player, entityItem, x, y, z, this));
-		            			prizes[PrizeRarity.Scrap].setRateIncrease(-25);
+		            			prizes[PrizeRarity.Scrap].setRateIncrease(-30);
 			            		prizes[PrizeRarity.Common].setRateIncrease(-20);
 			            		prizes[PrizeRarity.Basic].setRateIncrease(-70);
 			            		prizes[PrizeRarity.Rare].setRateIncrease(15);
-			            		prizes[PrizeRarity.Epic].setRateIncrease(2);
+			            		prizes[PrizeRarity.Epic].setRateIncrease(5);
 				            	chainDrawing = true;
 			            		return false;
 		            		}else if(itemStack.stackSize >= 4){
-		            			prizes[PrizeRarity.Scrap].setRateIncrease(-25);
+		            			prizes[PrizeRarity.Scrap].setRateIncrease(-30);
 			            		prizes[PrizeRarity.Common].setRateIncrease(-20);
 			            		prizes[PrizeRarity.Basic].setRateIncrease(-70);
 			            		prizes[PrizeRarity.Rare].setRateIncrease(15);
-			            		prizes[PrizeRarity.Epic].setRateIncrease(2);
+			            		prizes[PrizeRarity.Epic].setRateIncrease(5);
 			            		if(!world.isRemote){
 			            			itemStack.stackSize -= 4;
 			            		}
@@ -311,7 +311,7 @@ public class TileEntityGachaCore extends TileEntityMultiblock{
 
     	Random random = new Random();
         byte b0 = 0;
-        ArrayList arraylist = new ArrayList();
+        ArrayList<Integer> arraylist = new ArrayList<Integer>();
 
 
         arraylist.add(Integer.valueOf(ItemDye.field_150922_c[random.nextInt(16)]));
@@ -350,9 +350,9 @@ public class TileEntityGachaCore extends TileEntityMultiblock{
         	for(int i=0; i<num; i++){
                 EntityFireworkRocket entityfireworkrocket = new EntityFireworkRocket(
                 		world,
-                		(double)(x + random.nextInt(3) - 1.5f),
+                		(double)(x + random.nextInt(3) - 1.0D + 0.5D),
                 		(double)(y + 4),
-                		(double)(z + random.nextInt(3) - 1.5f),
+                		(double)(z + random.nextInt(3) - 1.0D + 0.5D),
                 		itemFireworks);
                 world.spawnEntityInWorld(entityfireworkrocket);
         	}

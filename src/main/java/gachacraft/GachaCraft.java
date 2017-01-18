@@ -15,7 +15,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-@Mod(modid = "Gacha_Craft")
+@Mod(modid = "Gacha_Craft", name = "GachaCraft", version = "1.0b")
 public class GachaCraft {
 
 	public static Item GachaTicket;
@@ -26,6 +26,11 @@ public class GachaCraft {
 
 	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event){
+	}
+
+	@Mod.EventHandler
+	public void Init(FMLPreInitializationEvent event){
+
 		GachaTicket = new ItemGachaTicket();
 		MagicStone = new ItemMagicStone();
 
@@ -47,11 +52,6 @@ public class GachaCraft {
 				'M',GachaCraft.MagicStone,
 				'R',Items.redstone
 		);
-	}
-
-	@Mod.EventHandler
-	public void Init(FMLPreInitializationEvent event){
-
 		GameRegistry.registerWorldGenerator(new MagicStoneOreGen(), 0);
 	}
 
