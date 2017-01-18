@@ -96,21 +96,22 @@ public class EntityGachaPivot extends Entity{
 			if(prizeCount > 0){
 				prizeCount--;
 				if(worldObj.isRemote){
+					EntityItem item = childItem.get(prizeCount);
 					for(int i=0; i<5; i++){
 						worldObj.spawnParticle(
 								"flame",
-								childItem.get(prizeCount).posX + rand.nextDouble()/2 - 0.25D,
-								childItem.get(prizeCount).posY + rand.nextDouble()/2 - 0.25D,
-								childItem.get(prizeCount).posZ + rand.nextDouble()/2 - 0.25D,
-								-Math.cos(radian)/10, 0, -Math.sin(radian)/10);
+								item.posX + rand.nextDouble()/2 - 0.25D,
+								item.posY + rand.nextDouble()/2 - 0.25D,
+								item.posZ + rand.nextDouble()/2 - 0.25D,
+								0, 0, 0);
 						worldObj.spawnParticle(
 								"explode",
-								childItem.get(prizeCount).posX + rand.nextDouble()/2 - 0.25D,
-								childItem.get(prizeCount).posY + rand.nextDouble()/2 - 0.25D,
-								childItem.get(prizeCount).posZ + rand.nextDouble()/2 - 0.25D,
+								item.posX + rand.nextDouble()/2 - 0.25D,
+								item.posY + rand.nextDouble()/2 - 0.25D,
+								item.posZ + rand.nextDouble()/2 - 0.25D,
 								0,0,0);
 					}
-					childItem.get(prizeCount).setDead();
+					item.setDead();
 					childItem.remove(prizeCount);
 				}
 			}
