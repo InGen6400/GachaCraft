@@ -2,22 +2,22 @@ package gachacraft.multiblock;
 
 import net.minecraft.block.Block;
 
-public class MultiblockPattern {
+public class MultiblockPatterns {
 
 	public Block[][][] pattern;
 	public final int[] offset;
 
-	public MultiblockPattern(Block[][][] pattern) {
+	public MultiblockPatterns(Block[][][] pattern) {
 		this.pattern = pattern;
 		offset = new int[]{1,1,1};
 	}
 
-	public MultiblockPattern(Block[][][] pattern, int offY, int offX, int offZ) {
+	public MultiblockPatterns(Block[][][] pattern, int offY, int offX, int offZ) {
 		this.pattern = pattern;
 		offset = new int[]{offY,offX,offZ};
 	}
 
-	public MultiblockPattern(Block[][][] pattern, int[] offset) {
+	public MultiblockPatterns(Block[][][] pattern, int[] offset) {
 		this.pattern = pattern;
 		this.offset = offset;
 	}

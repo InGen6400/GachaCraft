@@ -5,12 +5,11 @@ import net.minecraft.world.World;
 
 public abstract class TileEntityMultiblock extends TileEntity{
 
-	protected MultiblockPattern pattern;
+	protected MultiblockPatterns pattern;
 
 	public abstract void initPattern();
 
 	public TileEntityMultiblock() {
-		initPattern();
 	}
 
 	public boolean isPatternVaild(World world){

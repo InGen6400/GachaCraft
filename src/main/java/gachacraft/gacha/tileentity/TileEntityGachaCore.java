@@ -9,7 +9,7 @@ import gachacraft.gacha.PrizeRarity;
 import gachacraft.gacha.Prizes;
 import gachacraft.gacha.entity.EntityGachaPivot;
 import gachacraft.helper.LogChatHelper;
-import gachacraft.multiblock.MultiblockPattern;
+import gachacraft.multiblock.MultiblockPatterns;
 import gachacraft.multiblock.TileEntityMultiblock;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -37,6 +37,7 @@ public class TileEntityGachaCore extends TileEntityMultiblock{
 
 	public TileEntityGachaCore() {
 		PrizeInit();
+		initPattern();
 	}
 
 	@Override
@@ -67,7 +68,7 @@ public class TileEntityGachaCore extends TileEntityMultiblock{
 			{Blocks.leaves, 			Blocks.bookshelf, 		Blocks.leaves}
 		};
 
-		this.pattern = new MultiblockPattern(pattern, 0, 1, 1);
+		this.pattern = new MultiblockPatterns(pattern, 0, 1, 1);
 	}
 
 	public void PrizeInit(){
@@ -144,6 +145,7 @@ public class TileEntityGachaCore extends TileEntityMultiblock{
 		this.x = x;
 		this.y = y;
 		this.z = z;
+		LogChatHelper.player = player;
 		if(!chainDrawing){
 			this.world = world;
 			this.player = player;
@@ -160,7 +162,6 @@ public class TileEntityGachaCore extends TileEntityMultiblock{
 
 	public boolean setUpGacha(int x, int y, int z){
 		if(!chainDrawing){
-			LogChatHelper.player = player;
 			if(isPatternVaild(world)){
 		        for (Object o : world.loadedEntityList) {
 		            Entity e = (Entity) o;
